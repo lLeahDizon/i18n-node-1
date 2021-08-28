@@ -1,0 +1,16 @@
+{
+  "name": "i18n-node-1",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev src/main.ts"
+  },
+  "author": "lLeahDizon <516330797@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.4"
+  }
+}
