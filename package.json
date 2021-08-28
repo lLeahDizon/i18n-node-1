@@ -8,9 +8,11 @@
   "author": "lLeahDizon <516330797@qq.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": "^3.0.2"
+    "commander": "^3.0.2",
+    "md5": "^2.3.0"
   },
   "devDependencies": {
+    "@types/md5": "^2.3.1",
     "@types/node": "^16.7.4"
   }
 }
