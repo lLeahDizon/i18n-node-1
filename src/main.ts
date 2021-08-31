@@ -3,6 +3,17 @@ import * as querystring from 'querystring';
 import md5 = require('md5');
 import {appId, appSecret} from './private';
 
+const errorMap = {
+  52003: '用户认证失败',
+  52004: 'error2',
+  52005: 'error3',
+  unknown: '服务器繁忙'
+};
+
+const associationMap = {
+  regionIds: ['region', 'region1Id', 'region2Id', 'region3Id']
+};
+
 export const translate = (word) => {
   const salt = Math.random();
   const sign = md5(appId + word + salt + appSecret);
@@ -43,12 +54,7 @@ export const translate = (word) => {
       }
       const object: BaiduResult = JSON.parse(string);
       if (object.error_code) {
-        console.log(object.error_code);
-        if (object.error_code === '52003') {
-          console.error('用户认证失败');
-        } else {
-          console.error(object.error_msg);
-        }
+        console.error(errorMap[object.error_code] || object.error_msg);
         process.exit(2);
       } else {
         console.log(object.trans_result[0].dst);
