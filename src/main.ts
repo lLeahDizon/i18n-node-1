@@ -5,8 +5,8 @@ import {appId, appSecret} from './private';
 
 const errorMap = {
   52003: '用户认证失败',
-  52004: 'error2',
-  52005: 'error3',
+  54001: '签名错误',
+  54003: '访问频率受限',
   unknown: '服务器繁忙'
 };
 
@@ -18,14 +18,20 @@ export const translate = (word) => {
   const salt = Math.random();
   const sign = md5(appId + word + salt + appSecret);
 
+  let from, to;
+
+  if (/[a-zA-Z]/.test(word[0])) {
+    // 英译为中
+    from = 'en';
+    to = 'zh';
+  } else {
+    // 中译为英
+    from = 'zh';
+    to = 'en';
+  }
+
   const query: string = querystring.stringify({
-    q: word,
-    from: 'en',
-    to: 'zh',
-    appid: appId + 1,
-    salt,
-    sign
-    //q=banana&from=en&to=zh&appid=20210828000929671&salt=1435660288&sign=aa01e2f0a91ef722c47c06552c3a49ab
+    q: word, appid: appId, from, to, salt, sign
   });
 
   const options = {
@@ -57,7 +63,9 @@ export const translate = (word) => {
         console.error(errorMap[object.error_code] || object.error_msg);
         process.exit(2);
       } else {
-        console.log(object.trans_result[0].dst);
+        object.trans_result.map(obj => {
+          console.log(obj.dst);
+        });
         // 退出当前进程，0 表示没有错误
         process.exit(0);
       }
