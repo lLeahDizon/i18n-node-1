@@ -3,18 +3,16 @@ import * as querystring from 'querystring';
 import md5 = require('md5');
 import {appId, appSecret} from './private';
 
-const errorMap = {
+type ErrorMap = {
+  [k: string]: string
+}
+const errorMap: ErrorMap = {
   52003: '用户认证失败',
   54001: '签名错误',
-  54003: '访问频率受限',
-  unknown: '服务器繁忙'
+  54003: '访问频率受限'
 };
 
-const associationMap = {
-  regionIds: ['region', 'region1Id', 'region2Id', 'region3Id']
-};
-
-export const translate = (word) => {
+export const translate = (word: string) => {
   const salt = Math.random();
   const sign = md5(appId + word + salt + appSecret);
 
@@ -42,8 +40,8 @@ export const translate = (word) => {
   };
 
   const request = https.request(options, (response) => {
-    const chunks = [];
-    response.on('data', (chunk) => {
+    const chunks: Buffer[] = [];
+    response.on('data', (chunk: Buffer) => {
       chunks.push(chunk);
     });
     response.on('end', () => {
